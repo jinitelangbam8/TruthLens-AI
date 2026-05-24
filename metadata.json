@@ -1,0 +1,6 @@
+{
+  "name": "TruthLens AI",
+  "description": "Advanced AI Deepfake Detection System - Scan and analyze images, videos, and audio for AI-generated manipulation, voice cloning, and synthetic media, with interactive reports and cybersecurity assistant.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
