@@ -161,9 +161,23 @@ usersDB.push({
 });
 userPasswords["user_guest"] = defaultUserPasswordHash;
 
+// Preseed the specific user's email as a high-clearance System Admin
+usersDB.push({
+  id: "user_jini",
+  username: "Jini_Telangbam",
+  email: "jinitelangbam8@gmail.com",
+  role: "admin",
+  createdAt: new Date().toISOString()
+});
+userPasswords["user_jini"] = bcrypt.hashSync("user123", 10);
+
 // Storage utility exports
 export const Storage = {
   // Users
+  updatePassword: async (userId: string, passwordPlain: string): Promise<void> => {
+    const hash = await bcrypt.hash(passwordPlain, 10);
+    userPasswords[userId] = hash;
+  },
   createUser: async (username: string, email: string, passwordPlain: string, role: 'user' | 'admin' = 'user'): Promise<User> => {
     const existing = usersDB.find((u) => u.email.toLowerCase() === email.toLowerCase());
     if (existing) {

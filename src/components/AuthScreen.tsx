@@ -204,16 +204,49 @@ export default function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
           </button>
         </div>
 
+        {/* Dedicated Quick Login Bypass for Jini Telangbam */}
+        <div className="mt-6 pt-5 border-t border-zinc-850">
+          <p className="text-center text-xs font-mono text-cyan-400 mb-3 uppercase tracking-wider flex items-center justify-center gap-1.5">
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
+            Operative Access Gateway
+          </p>
+          <button
+            onClick={async () => {
+              setLoading(true);
+              setError(null);
+              try {
+                const res = await fetch("/api/auth/login", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ email: "jinitelangbam8@gmail.com", password: "user123" })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message);
+                onAuthSuccess(data.user, data.token);
+              } catch (err: any) {
+                setError(err.message || "Failed to log in as Jini.");
+              } finally {
+                setLoading(false);
+              }
+            }}
+            disabled={loading}
+            className="w-full py-3 bg-gradient-to-r from-cyan-500/20 via-indigo-500/20 via-rose-500/20 to-purple-500/20 hover:from-cyan-500/30 hover:via-indigo-500/30 hover:via-rose-500/30 hover:to-purple-500/30 text-cyan-300 hover:text-white rounded-xl border border-indigo-400/40 hover:border-indigo-400 text-xs font-mono uppercase text-center flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md glow-indigo active:translate-y-px"
+          >
+            <Shield className="w-4 h-4 text-cyan-400 animate-pulse" />
+            <span>Authorize jinitelangbam8@gmail.com (Super Admin)</span>
+          </button>
+        </div>
+
         {/* Guest access portal for instant preview evaluation */}
-        <div className="mt-8 pt-6 border-t border-zinc-900">
-          <p className="text-center text-xs font-mono text-zinc-500 mb-3 uppercase tracking-wider">
-            Gateways Quick Sandbox Bypass
+        <div className="mt-6 pt-5 border-t border-zinc-900/40">
+          <p className="text-center text-xs font-mono text-zinc-500 mb-2.5 uppercase tracking-wider">
+            Alternative Sandbox Credentials
           </p>
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => loginAsSeeded('guest')}
               disabled={loading}
-              className="px-3 py-2 bg-zinc-900 hover:bg-zinc-800 text-indigo-400 rounded-lg border border-indigo-500/10 text-xs font-mono uppercase text-center flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+              className="px-3 py-2 bg-zinc-900/60 hover:bg-zinc-800 text-indigo-400 hover:text-indigo-300 rounded-lg border border-indigo-500/10 hover:border-indigo-500/30 text-xs font-mono uppercase text-center flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
             >
               <span>User Bypass</span>
               <ChevronRight className="w-3.5 h-3.5" />
@@ -221,14 +254,14 @@ export default function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
             <button
               onClick={() => loginAsSeeded('admin')}
               disabled={loading}
-              className="px-3 py-2 bg-zinc-900 hover:bg-zinc-800 text-teal-400 rounded-lg border border-teal-500/10 text-xs font-mono uppercase text-center flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+              className="px-3 py-2 bg-zinc-900/60 hover:bg-zinc-800 text-teal-400 hover:text-teal-300 rounded-lg border border-teal-500/10 hover:border-teal-500/30 text-xs font-mono uppercase text-center flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
             >
               <span>Admin Bypass</span>
               <ChevronRight className="w-3.5 h-3.5" />
             </button>
           </div>
           <div className="mt-2 text-center text-[10px] font-mono text-zinc-600">
-            Guest credentials: user123 (user) & admin123 (admin)
+            Fallback passcodes: admin123 (admin) & user123 (user)
           </div>
         </div>
       </div>
